@@ -38,17 +38,17 @@ main :: proc() {
 
 	for !rl.WindowShouldClose() {
 
-		if rl.IsKeyDown(.UP) {
+		if rl.IsKeyDown(.W) {
 			move_direction = {0, -1}
 		}
-		if rl.IsKeyDown(.DOWN) {
+		if rl.IsKeyDown(.S) {
 			move_direction = {0, 1}
 		}
 
-		if rl.IsKeyDown(.LEFT) {
+		if rl.IsKeyDown(.A) {
 			move_direction = {-1, 0}
 		}
-		if rl.IsKeyDown(.RIGHT) {
+		if rl.IsKeyDown(.D) {
 			move_direction = {1, 0}
 		}
 
@@ -121,6 +121,11 @@ main :: proc() {
 				direction = snake[i - 1] - snake[i]
 			}
 
+			/*
+			Die Achse der Rotation herausfinden
+			DEG_PER_RAD (Degrees per Radians) übersetzt ins Deutsche Grad pro Radiant (zu tief ins Mathematik)
+			//NOTE: Die Schlange soll sich um eine Richtung drehen und bewegen können.
+			*/
 			rotation := math.atan2(f32(direction.y), f32(direction.x)) * math.DEG_PER_RAD
 
 			source := rl.Rectangle{0, 0, f32(part_sprite.width), f32(part_sprite.height)}
@@ -143,8 +148,11 @@ main :: proc() {
 		}
 
 		if game_over {
+			high_score := snake_length - 3
+			high_score_str := fmt.ctprintf("High Score: %v", high_score)
 			rl.DrawText("Game Over!", 4, 4, 25, rl.RED)
 			rl.DrawText("Press Enter to play again", 4, 30, 15, rl.BLACK)
+			rl.DrawText(high_score_str, 4, 50, 15, rl.GRAY)
 		}
 
 		score := snake_length - 3
