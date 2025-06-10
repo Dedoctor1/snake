@@ -28,13 +28,13 @@ main :: proc() {
 
 	restart()
 
-	food_sprite := rl.LoadTexture("./food.png")
-	head_sprite := rl.LoadTexture("./head.png")
-	body_sprite := rl.LoadTexture("./body.png")
-	tail_sprite := rl.LoadTexture("./tail.png")
+	food_sprite := rl.LoadTexture("./pictures/food.png")
+	head_sprite := rl.LoadTexture("./pictures/head.png")
+	body_sprite := rl.LoadTexture("./pictures/body.png")
+	tail_sprite := rl.LoadTexture("./pictures/tail.png")
 
-	eat_sound := rl.LoadSound("./eat.wav")
-	crash_sound := rl.LoadSound("./crash.wav")
+	eat_sound := rl.LoadSound("./sounds/eat.wav")
+	crash_sound := rl.LoadSound("./sounds/crash.wav")
 
 	for !rl.WindowShouldClose() {
 
