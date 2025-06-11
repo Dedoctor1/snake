@@ -1,7 +1,11 @@
-package snake
+package snake// "package <name>" muss bei jeder Datei angegeben werden, sonst kompiliert er nicht
 
+/*
+Folgende Bibliotheken (oder Verzeichnisse) werden importiert, um Funktionen/Prozeduren anzuwenden
+*/
 import "core:fmt"
 import "core:math"
+import "show"
 import rl "vendor:raylib"
 
 WINDOW_SIZE :: 1000
@@ -21,7 +25,7 @@ food_pos: Vector2i
 
 
 main :: proc() {
-	rl.SetConfigFlags({.VSYNC_HINT})
+	rl.SetConfigFlags({.VSYNC_HINT}) // Einrichtung der Konfiguration, um vertikale Syncronisation zu aktivieren
 	rl.InitWindow(WINDOW_SIZE, WINDOW_SIZE, "Snake")
 	rl.SetWindowState({.WINDOW_RESIZABLE})
 	rl.InitAudioDevice()
@@ -61,40 +65,49 @@ main :: proc() {
 			tick_timer -= rl.GetFrameTime()
 		}
 
-		if tick_timer <= 0 {
-			next_part_pos := snake[0]
-			snake[0] += move_direction
-			head_pos := snake[0]
+		// if tick_timer <= 0 {
+		// 	next_part_pos := snake[0]
+		// 	snake[0] += move_direction
+		// 	head_pos := snake[0]
+		//
+		// 	if head_pos.x <= 0 ||
+		// 	   head_pos.y <= 0 ||
+		// 	   head_pos.x >= GRID_WIDTH ||
+		// 	   head_pos.y >= GRID_WIDTH {
+		// 		game_over = true
+		// 		rl.PlaySound(crash_sound)
+		// 	}
+		//
+		// 	for i in 1 ..< snake_length {
+		// 		cur_pos := snake[i]
+		//
+		// 		if cur_pos == head_pos {
+		// 			game_over = true
+		// 			rl.PlaySound(crash_sound)
+		// 		}
+		//
+		// 		snake[i] = next_part_pos
+		// 		next_part_pos = cur_pos
+		// 	}
+		//
+		// 	if head_pos == food_pos {
+		// 		snake_length += 1
+		// 		snake[snake_length - 1] = next_part_pos
+		// 		place_food()
+		// 		rl.PlaySound(eat_sound)
+		// 	}
+		//
+		// 	tick_timer = TICK_RATE + tick_timer
+		// }
 
-			if head_pos.x <= 0 ||
-			   head_pos.y <= 0 ||
-			   head_pos.x >= GRID_WIDTH ||
-			   head_pos.y >= GRID_WIDTH {
-				game_over = true
-				rl.PlaySound(crash_sound)
-			}
-
-			for i in 1 ..< snake_length {
-				cur_pos := snake[i]
-
-				if cur_pos == head_pos {
-					game_over = true
-					rl.PlaySound(crash_sound)
-				}
-
-				snake[i] = next_part_pos
-				next_part_pos = cur_pos
-			}
-
-			if head_pos == food_pos {
-				snake_length += 1
-				snake[snake_length - 1] = next_part_pos
-				place_food()
-				rl.PlaySound(eat_sound)
-			}
-
-			tick_timer = TICK_RATE + tick_timer
-		}
+		tick_timer = show.timer_check(
+			tick_timer,
+			&snake,
+			move_direction,
+			TICK_RATE,
+			eat_sound,
+			crash_sound,
+		)
 
 		rl.BeginDrawing()
 		rl.ClearBackground({50, 53, 83, 255})
@@ -162,8 +175,12 @@ main :: proc() {
 		rl.EndMode2D()
 		rl.EndDrawing()
 
-		free_all(context.temp_allocator)
+		free_all(context.temp_allocator) // gibt alle temporären Speicher an das Betriebssystem zurück
 	}
+
+	/*
+	Die Texturen mit Bilder und Soundeffekte werden entladen
+	*/
 
 	rl.UnloadTexture(head_sprite)
 	rl.UnloadTexture(food_sprite)
@@ -173,8 +190,8 @@ main :: proc() {
 	rl.UnloadSound(eat_sound)
 	rl.UnloadSound(crash_sound)
 
-	rl.CloseAudioDevice()
-	rl.CloseWindow()
+	rl.CloseAudioDevice() // schaltet das Audiogerät aus
+	rl.CloseWindow() // das Fenster schließen
 }
 
 place_food :: proc() {
