@@ -29,8 +29,8 @@ food_pos: Vector2i
 
 main :: proc() {
 	rl.SetConfigFlags({.VSYNC_HINT}) // Einrichtung der Konfiguration, um vertikale Syncronisation zu aktivieren
-	rl.InitWindow(WINDOW_SIZE, WINDOW_SIZE, "Snake") // 
-	rl.SetWindowState({.WINDOW_RESIZABLE})
+	rl.InitWindow(WINDOW_SIZE, WINDOW_SIZE, "Snake") // Initialisierung des Fensters
+	rl.SetWindowState({.WINDOW_RESIZABLE}) // Man Kann mit der linken Maustaste das Fenster größer oder kleiner ziehen
 	rl.InitAudioDevice() // Schaltet das Audiogerät ein
 
 	restart() // Die restart Prozedur setzt die Schlange wieder in die ursprüngliche Position zurück
